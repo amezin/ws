@@ -8,7 +8,7 @@ HTTP_SESSION_TIMEOUTS = {'read_timeout': 2.0}
 class RequestLogger(logging.LoggerAdapter):
     def __init__(self, logger, request):
         super().__init__(logger, None)
-        self.prefix = f"[{request.url.path} {request.transport.get_extra_info('peername')}] "
+        self.prefix = "[{} {}] ".format(request.url.path, request.transport.get_extra_info('peername'))
 
     def process(self, msg, kwargs):
         return self.prefix + msg, kwargs

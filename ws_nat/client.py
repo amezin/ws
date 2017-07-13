@@ -92,7 +92,7 @@ class Client:
 
                 peer_host = peer['host']
                 for peer_sockname in peer['ports']:
-                    peer_url = f"ws://{peer_host}:{peer_sockname[1]}/"
+                    peer_url = "ws://{}:{}/".format(peer_host, peer_sockname[1])
                     LOG.info("Trying %s", peer_url)
 
                     try:
