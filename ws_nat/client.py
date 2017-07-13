@@ -19,38 +19,37 @@ class Client:
     async def main(self, ws_connection):
         pass
 
+    async def handle_server_connection(self, request):
+        logger = util.RequestLogger(LOG, request)
+        logger.info("Client connected")
+
+        # Workaround for https://github.com/aio-libs/aiohttp/issues/2024
+        class DummyApp:
+            def __init__(self):
+                self.loop = asyncio.get_event_loop()
+
+        request.app = DummyApp()
+        # End workaround
+
+        ws_connection = aiohttp.web.WebSocketResponse(**util.WEBSOCKET_TIMEOUTS)
+        await ws_connection.prepare(request)
+
+        logger.info("Websocket connection established")
+
+        try:
+            await self.main(ws_connection)
+
+            logger.info("Completed successfully")
+            self.done.set()
+
+        finally:
+            await ws_connection.close()
+            logger.info("Websocket connection closed")
+
+        return ws_connection
+
     async def run_server(self):
-
-        async def handle_server_connection(request):
-            logger = util.RequestLogger(LOG, request)
-            logger.info("Client connected")
-
-            # Workaround for https://github.com/aio-libs/aiohttp/issues/2024
-            class DummyApp:
-                def __init__(self):
-                    self.loop = asyncio.get_event_loop()
-
-            request.app = DummyApp()
-            # End workaround
-
-            ws_connection = aiohttp.web.WebSocketResponse(**util.WEBSOCKET_TIMEOUTS)
-            await ws_connection.prepare(request)
-
-            logger.info("Websocket connection established")
-
-            try:
-                await self.main(ws_connection)
-
-                logger.info("Completed successfully")
-                self.done.set()
-
-            finally:
-                await ws_connection.close()
-                logger.info("Websocket connection closed")
-
-            return ws_connection
-
-        ws_server = aiohttp.web.Server(handle_server_connection)
+        ws_server = aiohttp.web.Server(self.handle_server_connection)
         sock_server = await asyncio.get_event_loop().create_server(ws_server, port=0)
 
         endpoints = [sock.getsockname() for sock in sock_server.sockets]
