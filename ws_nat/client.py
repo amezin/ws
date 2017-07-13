@@ -75,7 +75,6 @@ class Client:
             await sock_server.wait_closed()
             await ws_server.shutdown()
 
-
     async def run_client(self):
         with aiohttp.ClientSession(raise_for_status=True, **util.HTTP_SESSION_TIMEOUTS) as session:
             while True:
@@ -106,7 +105,6 @@ class Client:
                         LOG.warning("Can't connect to %s: %s", peer_url, ex)
 
                 await asyncio.sleep(1)
-
 
     async def run_client_server(self):
         tasks = [
