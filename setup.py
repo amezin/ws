@@ -7,6 +7,7 @@ setup_requires = ['pytest-runner'] if needs_pytest else []
 
 setuptools.setup(
     name='ws-nat',
+    python_requires='>=3.5',
     install_requires=['aiohttp'],
     setup_requires=setup_requires,
     tests_require=['pytest', 'pytest-aiohttp'],
