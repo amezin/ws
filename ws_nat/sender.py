@@ -26,7 +26,7 @@ def run():
 
     sender = Sender(args.intermediate_server)
     sender.data.put_nowait(args.message)
-    asyncio.get_event_loop().run_until_complete(sender.run_client_server())
+    asyncio.get_event_loop().run_until_complete(sender.run_client_and_server())
 
 
 if __name__ == '__main__':

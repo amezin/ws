@@ -17,7 +17,7 @@ class Receiver(client.Client):
 
 def run():
     args = client.parse_command_line(argparse.ArgumentParser(description="Receive a message and print it to stdout"))
-    asyncio.get_event_loop().run_until_complete(Receiver(args.intermediate_server).run_client_server())
+    asyncio.get_event_loop().run_until_complete(Receiver(args.intermediate_server).run_client_and_server())
 
 
 if __name__ == '__main__':

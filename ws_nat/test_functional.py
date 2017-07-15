@@ -16,8 +16,8 @@ async def test_all(test_server):
         sender_obj = sender.Sender(server.make_url('/'))
         sender_obj.data.put_nowait(message)
 
-        await asyncio.gather(asyncio.ensure_future(receiver_obj.run_client_server()),
-                             asyncio.ensure_future(sender_obj.run_client_server()))
+        await asyncio.gather(asyncio.ensure_future(receiver_obj.run_client_and_server()),
+                             asyncio.ensure_future(sender_obj.run_client_and_server()))
 
         assert received == [message]
 
@@ -45,8 +45,8 @@ async def test_receiver_nat(test_server):
         sender_obj = sender.Sender(server.make_url('/'))
         sender_obj.data.put_nowait(message)
 
-        await asyncio.gather(asyncio.ensure_future(receiver_obj.run_client_server()),
-                             asyncio.ensure_future(sender_obj.run_client_server()))
+        await asyncio.gather(asyncio.ensure_future(receiver_obj.run_client_and_server()),
+                             asyncio.ensure_future(sender_obj.run_client_and_server()))
 
         assert received == [message]
 
@@ -64,7 +64,7 @@ async def test_sender_nat(test_server):
         sender_obj = NattedSender(server.make_url('/'))
         sender_obj.data.put_nowait(message)
 
-        await asyncio.gather(asyncio.ensure_future(receiver_obj.run_client_server()),
-                             asyncio.ensure_future(sender_obj.run_client_server()))
+        await asyncio.gather(asyncio.ensure_future(receiver_obj.run_client_and_server()),
+                             asyncio.ensure_future(sender_obj.run_client_and_server()))
 
         assert received == [message]

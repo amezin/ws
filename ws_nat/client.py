@@ -106,7 +106,7 @@ class Client:
 
                 await asyncio.sleep(1)
 
-    async def run_client_server(self):
+    async def run_client_and_server(self):
         tasks = [
             asyncio.ensure_future(self.run_server()),
             asyncio.ensure_future(self.run_client())
