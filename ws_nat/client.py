@@ -9,6 +9,7 @@ from . import util
 
 LOG = logging.getLogger(__name__)
 
+
 class Client:
     def __init__(self, registration_url, peers_url):
         self.done = asyncio.Event()
